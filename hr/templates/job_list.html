@@ -1,0 +1,46 @@
+{%extends "base.html"%}
+{%block mainblock%}
+
+<div class="container">
+    <div>
+        <a href="{%url 'job-list'%}">ListAllJobs</a>
+        <a href="{%url 'job-list'%}?status=True">Active Jobs</a>
+        <a href="{%url 'job-list'%}?status=False">Inactive Jobs</a>
+      </div>
+    {%for job in jobs%}
+    <div class="card mb-3" class="w-75">
+        <div class="row g-0">
+            <div class="col-md-4">
+                {%if job.poster%}
+                <img src="{{job.poster.url}}" class="img-fluid rounded-start" alt="...">
+                {%endif%}
+            </div>
+            <div class="col-md-5">
+                <div class="card-body">
+                    <h5 class="card-title">{{job.title}}</h5>
+                    <p class="card-text">{{job.discription}}</p>
+                    <p class="card-text">{{job.salary}}</p>
+                    <p class="card-text">{{job.experience}}</p>
+                    <p class="card-text">{{job.lastdate}}</p>
+                    <p class="card-text">{{job.vacancies}}</p>
+                    <p class="card-text">{{job.qualification}}</p>
+                    <p class="card-text">{{job.category}}</p>
+                    <p class="card-text">{{job.company}}</p>
+
+
+                    <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card-body">
+                    <a href="{%url 'job-edit' job.id%}">edit</a>
+                    <a href="{%url 'job-delete' job.id %}">delete</a>
+                    <a href="{%url 'job-applicationlist' job.id%}">{{job.application_count}}ViewApplications</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+    {%endfor%}
+{%endblock%}

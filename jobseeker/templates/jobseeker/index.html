@@ -1,0 +1,59 @@
+{%extends 'jobseeker/base.html'%}
+
+{%block categoryblock%}
+<div class="mt-5">.</div>
+
+<div class="row mt-5">
+  {%for cat in categories%}
+    <div class="col-3">
+      <a href="{%url 'seeker_index'%}?category={{cat.name}}">{{cat.name}}</a>({{cat.jobs_set.all.count}}jobs)
+
+    </div>
+    {%endfor%}
+
+</div>
+
+{%endblock%}
+{%block bodyblock%}
+
+<div class="card mb-3 mt-4" style="max-width: 100%">
+    <div class="row g-0">
+      {%for job in data%}
+      <div class="col-4 d-flex justify-content-center align-items-center px-2 mt-4 ">
+         
+        {%if job.poster%}
+        <img src="{{job.poster.url}}" class="img-fluid rounded-start" alt="...">
+        {%else%}
+        <img src="http://pluspng.com/img-png/job-png-hd-work-png-hd-2000.png" class="img-fluid rounded-start" alt="">
+        {%endif%}
+      </div>
+      <div class="col-8 mb-3">
+         <div class="card-body">
+           <h5 class="card-title">{{job.title}}</h5>
+           <p class="card-text">
+             <i class="fa-regular fa-clock"></i> {{job.job_type}}
+             <i class="fa-solid fa-sack-dollar" style="color: #3f4040;"></i> {{job.salary}}
+             <i class="fa-solid fa-building" style="color: #4a4a4a;"></i> {{job.company}}
+ 
+         </p>
+
+         {%if request.user.profile%}
+         <form action="{%url 'job_save' job.id%}" method="post">
+          {%csrf_token%}
+          {%if job in request.user.profile.saved_job.all%}
+          <button type="submit" name="action" value="unsave">Unsave</button>
+          {%else%}
+          <button type="submit" name="action" value="save">Save</button>
+          {%endif%}
+         </form>
+         {%endif%}
+
+          <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+          <a href="{%url 'job_detail' job.id%}" class="btn btn-outline-success">View More</a>
+      </div>
+    </div>
+    {%endfor%}
+
+  </div>
+
+{%endblock%}
